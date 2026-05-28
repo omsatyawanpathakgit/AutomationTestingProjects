@@ -25,6 +25,6 @@ jobs:
           pip install selenium webdriver-manager
 
       - name: Run YouTube Automation Test
+        shell: cmd
         run: |
-          cd "YouTube AutomationTesting Project using Python"
-          python youtube_python.py
+          cd "YouTube AutomationTesting Project using Python" && python youtube_python.py
