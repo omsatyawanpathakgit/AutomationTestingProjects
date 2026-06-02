@@ -1,93 +1,110 @@
+import unittest
+import logging
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-
-import time
 
 
-def type_search_results(query):
-    global SEARCH_QUERY
-    SEARCH_QUERY = query
+class YouTubeTest(unittest.TestCase):
 
-# -------- SETUP DRIVER --------
-from selenium.webdriver.chrome.service import Service
-options = Options()
-options.add_argument("--headless=new")
-options.add_argument("--no-sandbox")
-options.add_argument("--disable-dev-shm-usage")
+    @classmethod
+    def setUpClass(cls):
+        # -------- LOGGING SETUP --------
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s - %(levelname)s - %(message)s"
+        )
+        cls.logger = logging.getLogger()
 
-driver = webdriver.Chrome(options=options)
+        # -------- DRIVER SETUP --------
+        options = Options()
+        options.add_argument("--headless=new")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
 
-driver.maximize_window()
+        cls.driver = webdriver.Chrome(options=options)
+        cls.driver.maximize_window()
+        cls.wait = WebDriverWait(cls.driver, 15)
 
-def open_website(url):
-    driver.get(url)
-    time.sleep(3)
+        cls.base_url = "https://www.youtube.com"
+        cls.search_query = "Mohenjodaro documentary"
 
-def search_youtube():
-    search_box = driver.find_element(By.NAME, "search_query")
-    search_box.send_keys(SEARCH_QUERY)
-    search_box.send_keys(Keys.ENTER)
-    time.sleep(3)
+        cls.logger.info("Driver initialized successfully")
 
+    def test_youtube_search_and_play(self):
+        driver = self.driver
+        wait = self.wait
 
-def play_video_results():
-    for i in range(1,10):
-        WebDriverWait(driver, 10).until(
+        # -------- OPEN WEBSITE --------
+        self.logger.info("Opening YouTube")
+        driver.get(self.base_url)
+
+        # -------- VERIFY PAGE LOAD --------
+        self.assertIn("YouTube", driver.title)
+
+        # -------- SEARCH --------
+        self.logger.info(f"Searching for: {self.search_query}")
+        search_box = wait.until(
+            EC.presence_of_element_located((By.NAME, "search_query"))
+        )
+        search_box.send_keys(self.search_query)
+        search_box.send_keys(Keys.ENTER)
+
+        # -------- VERIFY SEARCH RESULTS --------
+        videos = wait.until(
             EC.presence_of_all_elements_located((By.ID, "video-title"))
         )
+        self.assertTrue(len(videos) > 0, "No search results found")
 
-        video = driver.find_element(By.XPATH, "(//ytd-video-renderer//a[@id='video-title'])"+f"[{i}]")
-        print(video.text)
-        video.click()
+        self.logger.info(f"Found {len(videos)} videos")
 
-        # wait for video page
-        time.sleep(5)
+        # -------- PLAY FIRST 5 VIDEOS --------
+        for i in range(5):
+            self.logger.info(f"Playing video {i+1}")
 
-        # ---- CLICK SKIP AD WHEN IT APPEARS ----
-        try:
-            WebDriverWait(driver, 30).until(
-                EC.element_to_be_clickable((By.CLASS_NAME, "ytp-skip-ad-button"))
-            ).click()
-            print("Ad skipped")
-        except:
-            print("No skip ad button")
-    
+            videos = wait.until(
+                EC.presence_of_all_elements_located((By.ID, "video-title"))
+            )
 
-        time.sleep(50) # watch video for 50 seconds before scrolling down to end of page
-        driver.back()  # go back to search results
+            video_title = videos[i].text
+            self.logger.info(f"Video Title: {video_title}")
 
- 
-def go_to_home_after_all_videos_played():
-    driver.get("https://www.youtube.com")
-    time.sleep(3)
+            videos[i].click()
+
+            # -------- WAIT FOR VIDEO PAGE --------
+            wait.until(
+                EC.presence_of_element_located((By.CLASS_NAME, "html5-video-player"))
+            )
+
+            # -------- TRY SKIP AD --------
+            try:
+                skip_btn = WebDriverWait(driver, 30).until(
+                    EC.element_to_be_clickable((By.CLASS_NAME, "ytp-skip-ad-button"))
+                )
+                skip_btn.click()
+                self.logger.info("Ad skipped")
+            except:
+                self.logger.info("No ad to skip")
+
+            # -------- VALIDATION --------
+            self.assertIn("youtube", driver.current_url.lower())
+
+            # -------- WATCH SHORT TIME --------
+            driver.implicitly_wait(3)
+
+            # -------- GO BACK --------
+            driver.back()
+
+        self.logger.info("Test completed successfully")
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.logger.info("Closing browser")
+        cls.driver.quit()
 
 
-def scroll_to_end_of_page():
-    last_height = driver.execute_script("return document.documentElement.scrollHeight")
-
-    while True:
-        driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
-        time.sleep(2)
-
-        new_height = driver.execute_script("return document.documentElement.scrollHeight")
-        if new_height == last_height:
-            break
-        last_height = new_height
-
-    print("Reached end of page")
-
-
-type_search_results("Mohenjodaro documentary")
-open_website("https://www.youtube.com")
-search_youtube()
-play_video_results()
-go_to_home_after_all_videos_played()
-scroll_to_end_of_page()
-
-# -------- CLOSE BROWSER --------
-time.sleep(5)
-driver.quit()
+if __name__ == "__main__":
+    unittest.main()
