@@ -1,0 +1,42 @@
+name: Apple Website Automation Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  apple-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./Complete Apple Website Software Testing
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Apple Automation Script
+        run: |
+          python apple_test.py
+
+      - name: Upload Logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apple-automation-logs
+          path: Apple Website Software Testing/*.log
