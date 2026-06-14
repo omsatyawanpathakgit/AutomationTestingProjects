@@ -1,3 +1,4 @@
+import os
 from selenium.webdriver import Chrome, Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -8,8 +9,16 @@ import time
 
 
 def prepare_logs():
-    log_file = r"complete___updated_apple_automationTesting_logs.log"
+    current_folder = os.path.dirname(os.path.abspath(__file__))
 
+    log_file = os.path.join(
+        current_folder,
+        "FINAL_updated_apple_automationTesting_logs.log"
+    )
+
+    abs_path = os.path.abspath(log_file)
+    print(f"Log file will be created at: {abs_path}")
+    
     logging.basicConfig(
         filename=log_file,
         level=logging.INFO,
@@ -18,7 +27,7 @@ def prepare_logs():
 
 def test_using_github_actions():
     options = Options()
-    options.add_argument("--headless=new")
+    #options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
 
@@ -52,9 +61,50 @@ def close_popup_if_present():
     except:
         logging.info("Country popup not found")
 
+def navigate_to_login_page():
+    try:
+        # Go back to homepage first:
+        driver.get("https://www.apple.com/")
+
+        bag_icon = wait.until(
+            EC.element_to_be_clickable(
+                (By.ID, "globalnav-menubutton-link-bag")
+            )
+        )
+        bag_icon.click()  
+        
+        time.sleep(2)  # Wait for the dropdown to appear
+        account_icon = wait.until(
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, "a.ac-gn-bagview-nav-link-signin")
+            )
+        )
+        account_icon.click()
+
+        time.sleep(10)  # Wait for the login page to load
+        logging.info("Navigated to login page")
+
+        
+        email_or_phone_input = wait.until(
+            EC.presence_of_element_located(
+                (By.ID, "account_name_text_field")
+            )
+        )
+
+        # click inside field
+        email_or_phone_input.click()
 
 
+        time.sleep(3)
 
+        email_or_phone_input.send_keys("omsatyawanpathakwebdevelopment@gmail.com")
+        email_or_phone_input.send_keys(Keys.ENTER)
+
+
+        logging.info("Email entered")
+        logging.info("Entered email on login page")
+    except Exception as e:
+        logging.error(f"Failed to navigate to login page (and/or) enter login details!")
 
 def scroll_to_footer():
     driver.execute_script("""
@@ -233,8 +283,9 @@ def main():
 
     search_queries()
 
+    navigate_to_login_page()
 
-    driver.quit()
+    #driver.quit()
 
 
 main()
