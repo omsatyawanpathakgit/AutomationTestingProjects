@@ -1,0 +1,50 @@
+2026-06-17 10:58:42,034 - INFO - Apple website opened
+2026-06-17 10:58:46,184 - INFO - Country popup closed
+2026-06-17 10:58:46,403 - INFO - Sidebar menu opened
+2026-06-17 10:58:48,580 - INFO - Sidebar menu closed
+2026-06-17 10:58:53,591 - INFO - Scrolled to footer
+2026-06-17 10:58:54,688 - INFO - Expanded Shop and Learn
+2026-06-17 10:58:56,730 - INFO - Collapsed Shop and Learn
+2026-06-17 10:58:58,817 - INFO - Expanded Apple Wallet
+2026-06-17 10:59:00,844 - INFO - Collapsed Apple Wallet
+2026-06-17 10:59:02,924 - INFO - Expanded Account
+2026-06-17 10:59:04,948 - INFO - Collapsed Account
+2026-06-17 10:59:07,012 - INFO - Expanded Entertainment
+2026-06-17 10:59:09,033 - INFO - Collapsed Entertainment
+2026-06-17 10:59:11,110 - INFO - Expanded Apple Store
+2026-06-17 10:59:13,135 - INFO - Collapsed Apple Store
+2026-06-17 10:59:15,200 - INFO - Expanded For Business
+2026-06-17 10:59:17,224 - INFO - Collapsed For Business
+2026-06-17 10:59:19,291 - INFO - Expanded For Education
+2026-06-17 10:59:21,323 - INFO - Collapsed For Education
+2026-06-17 10:59:23,420 - INFO - Expanded For Healthcare
+2026-06-17 10:59:25,451 - INFO - Collapsed For Healthcare
+2026-06-17 10:59:27,538 - INFO - Expanded For Government
+2026-06-17 10:59:29,566 - INFO - Collapsed For Government
+2026-06-17 10:59:31,660 - INFO - Expanded Apple Values
+2026-06-17 10:59:33,691 - INFO - Collapsed Apple Values
+2026-06-17 10:59:35,767 - INFO - Expanded About Apple
+2026-06-17 10:59:37,794 - INFO - Collapsed About Apple
+2026-06-17 10:59:48,806 - INFO - Scrolled to top
+2026-06-17 10:59:55,094 - INFO - Searched: iPhone
+2026-06-17 10:59:55,095 - INFO - Screenshot saved for search results of iPhone
+2026-06-17 11:00:04,106 - INFO - Scrolled to footer
+2026-06-17 11:00:09,118 - INFO - Scrolled to top
+2026-06-17 11:00:16,457 - INFO - Searched: MacBook
+2026-06-17 11:00:16,457 - INFO - Screenshot saved for search results of MacBook
+2026-06-17 11:00:25,466 - INFO - Scrolled to footer
+2026-06-17 11:00:30,471 - INFO - Scrolled to top
+2026-06-17 11:00:37,747 - INFO - Searched: iPad
+2026-06-17 11:00:37,747 - INFO - Screenshot saved for search results of iPad
+2026-06-17 11:00:46,754 - INFO - Scrolled to footer
+2026-06-17 11:00:51,760 - INFO - Scrolled to top
+2026-06-17 11:00:59,315 - INFO - Searched: Apple Watch
+2026-06-17 11:00:59,315 - INFO - Screenshot saved for search results of Apple Watch
+2026-06-17 11:01:08,323 - INFO - Scrolled to footer
+2026-06-17 11:01:13,331 - INFO - Scrolled to top
+2026-06-17 11:01:20,990 - INFO - Searched: AirPods
+2026-06-17 11:01:20,991 - INFO - Screenshot saved for search results of AirPods
+2026-06-17 11:01:30,000 - INFO - Scrolled to footer
+2026-06-17 11:01:35,007 - INFO - Scrolled to top
+2026-06-17 11:01:50,522 - INFO - Navigated to login page
+2026-06-17 11:02:10,889 - ERROR - Failed to navigate to login page (and/or) enter login details!

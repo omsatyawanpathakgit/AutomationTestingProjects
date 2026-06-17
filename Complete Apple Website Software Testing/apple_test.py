@@ -13,7 +13,7 @@ def prepare_logs():
 
     log_file = os.path.join(
         current_folder,
-        "FINAL_updated_apple_automationTesting_logs.log"
+        "OPERATIONS_HISTORY_ON_Apple_website.log"
     )
 
     abs_path = os.path.abspath(log_file)
@@ -21,6 +21,7 @@ def prepare_logs():
     
     logging.basicConfig(
         filename=log_file,
+        filemode='w',
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s"
     )
@@ -40,6 +41,7 @@ def load_apple_website():
 
     # Mobile viewport like your DevTools screenshot
     driver.set_window_size(688, 1296)
+    
 
     driver.get("https://www.apple.com/")
 
@@ -156,7 +158,19 @@ def search_queries():
             search_input.send_keys(item)
             search_input.send_keys(Keys.ENTER)
 
+
+
+            time.sleep(5)  # Wait for search results to load
+            #Save product search results screenshot:
+            #Save screenshot in a folder named "product_screenshots" in the same directory as this script:
+            current_folder = os.path.dirname(os.path.abspath(__file__))
+            
+            os.makedirs(f"{current_folder}/all_product_searchResults_screenshots", exist_ok=True)
+            driver.save_screenshot(f"{current_folder}/all_product_searchResults_screenshots/{item}_searchResults_screenshot.png")
+
             logging.info(f"Searched: {item}")
+            logging.info(f"Screenshot saved for search results of {item}")
+            print(f"Screenshot saved for search results of {item}")
 
             time.sleep(4)
 
